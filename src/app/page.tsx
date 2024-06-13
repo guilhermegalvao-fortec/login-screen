@@ -23,21 +23,21 @@ export default function Home() {
   const [erroTerms, setErroTerms] = useState("");
 
   const handleChangeName = (event: any) => {
-    if (event.target.value.length > 0) {
+    if (event.target.value.trim().length > 0) {
       setErroName("");
     }
     setName(event.target.value);
   };
 
   const handleChangeLastName = (event: any) => {
-    if (event.target.value.length > 0) {
+    if (event.target.value.trim().length > 0) {
       setErroLastName("");
     }
     setLastName(event.target.value);
   };
 
   const handleChangeEmail = (event: any) => {
-    if (event.target.value.length > 0) {
+    if (event.target.value.trim().length > 0) {
       setErroEmail("");
     }
     setEmail(event.target.value);
@@ -51,7 +51,7 @@ export default function Home() {
   };
 
   const handleChangeMessage = (event: any) => {
-    if (event.target.value.length > 0) {
+    if (event.target.value.trim().length > 0) {
       setErroMessage("");
     }
     setMessage(event.target.value);
