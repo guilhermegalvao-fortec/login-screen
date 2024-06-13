@@ -21,6 +21,7 @@ export default function Home() {
   const [erroMessage, setErroMessage] = useState("");
   const [terms, setTerms] = useState(false);
   const [erroTerms, setErroTerms] = useState("");
+  const [show, setShow] = useState(true);
 
   const handleChangeName = (event: any) => {
     if (event.target.value.trim().length > 0) {
@@ -68,7 +69,7 @@ export default function Home() {
     }
     setTerms((terms) => !terms);
   };
-  const showData = (event: any) => {
+  const showData = async (event: any) => {
     event.preventDefault();
     setErroName("");
     setErroLastName("");
@@ -77,34 +78,60 @@ export default function Home() {
     setErroMessage("");
     setErroTerms("");
 
-    if (name === "" || name.includes(" ")) {
+    let showFetchData = true;
+
+    if (name === "") {
       setErroName("O campo Nome precisa ser preenchido");
+      showFetchData = false;
     }
-    if (lastName === "" || lastName.includes(" ")) {
+    if (lastName === "" || name.trim() === "") {
       setErroLastName("O campo Last Name precisa ser preenchido");
+      showFetchData = false;
     }
-    if (email === "" || email.includes(" ")) {
+    if (email === "" || name.trim() === "") {
       setErroEmail("O campo e-mail precisa ser preenchido");
+      showFetchData = false;
     } else if (!email.includes("@")) {
       setErroEmail("O e-mail está inválido");
+      showFetchData = false;
     }
     if (radioQuery === "") {
       setErroCheckbox("Selecione uma das opções");
+      showFetchData = false;
     }
-    if (message === "" || message.includes(" ")) {
+    if (message === "" || name.trim() === "") {
       setErroMessage("O campo Message precisa ser preenchido");
+      showFetchData = false;
     }
     if (terms === false) {
-      return setErroTerms("Você precisa aceitar os termos");
+      setErroTerms("Você precisa aceitar os termos");
+      showFetchData = false;
+      return;
     }
-    console.log({
+
+    if (!showFetchData) {
+      return;
+    }
+    let _data = {
       name,
       lastName,
       email,
       message,
       radioQuery,
       terms,
+    };
+
+    console.log(_data);
+    const res = await fetch("http://localhost:3000/api", {
+      method: "POST",
+      body: JSON.stringify(_data),
+      headers: { "Content-type": "application/json; charset=UTF-8" },
     });
+    if (!res.ok) {
+      throw new Error("Failed to fetch data");
+    }
+    const dataSuccess = await res.json();
+    console.log(dataSuccess);
   };
   const handleChangeReset = (event: any) => {
     event.preventDefault();
