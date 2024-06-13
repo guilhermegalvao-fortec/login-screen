@@ -23,21 +23,21 @@ export default function Home() {
   const [erroTerms, setErroTerms] = useState("");
 
   const handleChangeName = (event: any) => {
-    if (name.length > -1) {
+    if (event.target.value.length > 0) {
       setErroName("");
     }
     setName(event.target.value);
   };
 
   const handleChangeLastName = (event: any) => {
-    if (lastName.length > -1) {
+    if (event.target.value.length > 0) {
       setErroLastName("");
     }
     setLastName(event.target.value);
   };
 
   const handleChangeEmail = (event: any) => {
-    if (email.length > -1) {
+    if (event.target.value.length > 0) {
       setErroEmail("");
     }
     setEmail(event.target.value);
@@ -51,7 +51,7 @@ export default function Home() {
   };
 
   const handleChangeMessage = (event: any) => {
-    if (message.length > 0) {
+    if (event.target.value.length > 0) {
       setErroMessage("");
     }
     setMessage(event.target.value);
@@ -201,7 +201,7 @@ export default function Home() {
             Message
           </Label>
           <Textarea
-            className="resize-none h-[200px] md:h-[100px] text-xs"
+            className="resize-none h-[200px] md:h-[100px] text-xs md:text-sm"
             value={message}
             onChange={handleChangeMessage}
           />
@@ -210,7 +210,7 @@ export default function Home() {
         <div className="flex flex-col md:flex-row gap-1">
           <div className="flex items-center gap-3 pl-1">
             <Checkbox checked={terms} onCheckedChange={handleChangeTerms} />
-            <Label htmlFor="email" className="text-[11px] text-gray-500">
+            <Label htmlFor="email" className="text-[11px]  text-gray-500">
               I consent to being contacted by the team
             </Label>
           </div>
