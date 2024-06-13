@@ -80,15 +80,15 @@ export default function Home() {
 
     let showFetchData = true;
 
-    if (name === "") {
+    if (name === "" || name.trim() === "") {
       setErroName("O campo Nome precisa ser preenchido");
       showFetchData = false;
     }
-    if (lastName === "" || name.trim() === "") {
+    if (lastName === "" || lastName.trim() === "") {
       setErroLastName("O campo Last Name precisa ser preenchido");
       showFetchData = false;
     }
-    if (email === "" || name.trim() === "") {
+    if (email === "" || email.trim() === "") {
       setErroEmail("O campo e-mail precisa ser preenchido");
       showFetchData = false;
     } else if (!email.includes("@")) {
@@ -99,39 +99,39 @@ export default function Home() {
       setErroCheckbox("Selecione uma das opções");
       showFetchData = false;
     }
-    if (message === "" || name.trim() === "") {
+    if (message === "" || message.trim() === "") {
       setErroMessage("O campo Message precisa ser preenchido");
       showFetchData = false;
     }
     if (terms === false) {
       setErroTerms("Você precisa aceitar os termos");
       showFetchData = false;
-      return;
     }
 
     if (!showFetchData) {
       return;
-    }
-    let _data = {
-      name,
-      lastName,
-      email,
-      message,
-      radioQuery,
-      terms,
-    };
+    } else {
+      let _data = {
+        name,
+        lastName,
+        email,
+        message,
+        radioQuery,
+        terms,
+      };
 
-    console.log(_data);
-    const res = await fetch("http://localhost:3000/api", {
-      method: "POST",
-      body: JSON.stringify(_data),
-      headers: { "Content-type": "application/json; charset=UTF-8" },
-    });
-    if (!res.ok) {
-      throw new Error("Failed to fetch data");
+      console.log(_data);
+      const res = await fetch("http://localhost:3000/api", {
+        method: "POST",
+        body: JSON.stringify(_data),
+        headers: { "Content-type": "application/json; charset=UTF-8" },
+      });
+      if (!res.ok) {
+        throw new Error("Failed to fetch data");
+      }
+      const dataSuccess = await res.json();
+      console.log(dataSuccess);
     }
-    const dataSuccess = await res.json();
-    console.log(dataSuccess);
   };
   const handleChangeReset = (event: any) => {
     event.preventDefault();
