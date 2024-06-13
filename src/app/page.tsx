@@ -77,13 +77,13 @@ export default function Home() {
     setErroMessage("");
     setErroTerms("");
 
-    if (name === "") {
+    if (name === "" || name.includes(" ")) {
       setErroName("O campo Nome precisa ser preenchido");
     }
-    if (lastName === "") {
+    if (lastName === "" || lastName.includes(" ")) {
       setErroLastName("O campo Last Name precisa ser preenchido");
     }
-    if (email === "") {
+    if (email === "" || email.includes(" ")) {
       setErroEmail("O campo e-mail precisa ser preenchido");
     } else if (!email.includes("@")) {
       setErroEmail("O e-mail está inválido");
@@ -91,7 +91,7 @@ export default function Home() {
     if (radioQuery === "") {
       setErroCheckbox("Selecione uma das opções");
     }
-    if (message === "") {
+    if (message === "" || message.includes(" ")) {
       setErroMessage("O campo Message precisa ser preenchido");
     }
     if (terms === false) {
