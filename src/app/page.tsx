@@ -69,6 +69,79 @@ export default function Home() {
     }
     setTerms((terms) => !terms);
   };
+
+  type Rule = {
+    rules: {
+      isValid: boolean;
+      onError: () => void;
+    }[];
+  };
+
+  // array de validacoes
+  // cada item do array é um objeto com as regras de validacao daquele objeto
+  // onde essas regras tbm sao um array
+  // cada regra de validacao tem dois campos
+  // isValid: que retorna se a regra é valida ou nao
+  // onError: uma funcao que vai ser executada caso a regra nao seja valida
+  // se falha na primeira regra, nao tem pq eu fazer as outras
+
+  const rules: Rule[] = [
+    {
+      rules: [
+        {
+          isValid: name.trim().length !== 0,
+          onError: () => setErroName("O campo Nome precisa ser preenchido"),
+        },
+      ],
+    },
+    {
+      rules: [
+        {
+          isValid: !!lastName.trim(),
+          onError: () =>
+            setErroLastName("O campo Last Name precisa ser preenchido"),
+        },
+      ],
+    },
+    {
+      rules: [
+        {
+          isValid: !!email.trim(),
+          onError: () => setErroEmail("O campo e-mail precisa ser preenchido"),
+        },
+        {
+          isValid: email.includes("@"),
+          onError: () => setErroEmail("O e-mail está inválido"),
+        },
+      ],
+    },
+    {
+      rules: [
+        {
+          isValid: !!radioQuery,
+          onError: () => setErroCheckbox("Selecione uma das opções"),
+        },
+      ],
+    },
+    {
+      rules: [
+        {
+          isValid: !!message.trim(),
+          onError: () =>
+            setErroMessage("O campo Message precisa ser preenchido"),
+        },
+      ],
+    },
+    {
+      rules: [
+        {
+          isValid: terms,
+          onError: () => setErroTerms("Você precisa aceitar os termos"),
+        },
+      ],
+    },
+  ];
+
   const showData = async (event: any) => {
     event.preventDefault();
     setErroName("");
@@ -80,33 +153,24 @@ export default function Home() {
 
     let showFetchData = true;
 
-    if (name === "" || name.trim() === "") {
-      setErroName("O campo Nome precisa ser preenchido");
-      showFetchData = false;
-    }
-    if (lastName === "" || lastName.trim() === "") {
-      setErroLastName("O campo Last Name precisa ser preenchido");
-      showFetchData = false;
-    }
-    if (email === "" || email.trim() === "") {
-      setErroEmail("O campo e-mail precisa ser preenchido");
-      showFetchData = false;
-    } else if (!email.includes("@")) {
-      setErroEmail("O e-mail está inválido");
-      showFetchData = false;
-    }
-    if (radioQuery === "") {
-      setErroCheckbox("Selecione uma das opções");
-      showFetchData = false;
-    }
-    if (message === "" || message.trim() === "") {
-      setErroMessage("O campo Message precisa ser preenchido");
-      showFetchData = false;
-    }
-    if (terms === false) {
-      setErroTerms("Você precisa aceitar os termos");
-      showFetchData = false;
-    }
+    rules.forEach((rule) => {
+      const rulesLength = rule.rules.length;
+      if (rulesLength === 1) {
+        if (!rule.rules[0].isValid) {
+          rule.rules[0].onError();
+          showFetchData = false;
+        }
+      } else {
+        let shouldGoToNextRule = true;
+        rule.rules.forEach((rule) => {
+          if (!rule.isValid && shouldGoToNextRule) {
+            rule.onError();
+            showFetchData = false;
+            shouldGoToNextRule = false;
+          }
+        });
+      }
+    });
 
     if (!showFetchData) {
       return;
