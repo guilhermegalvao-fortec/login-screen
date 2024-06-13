@@ -1,113 +1,233 @@
-import Image from "next/image";
+"use client";
+
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { useState } from "react";
+import { Checkbox } from "@/components/ui/checkbox";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 export default function Home() {
+  const [name, setName] = useState("");
+  const [erroName, setErroName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [erroLastName, setErroLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [erroEmail, setErroEmail] = useState("");
+  const [radioQuery, setRadioQuery] = useState("");
+  const [erroCheckbox, setErroCheckbox] = useState("");
+  const [message, setMessage] = useState("");
+  const [erroMessage, setErroMessage] = useState("");
+  const [terms, setTerms] = useState(false);
+  const [erroTerms, setErroTerms] = useState("");
+
+  const handleChangeName = (event: any) => {
+    if (name.length > -1) {
+      setErroName("");
+    }
+    setName(event.target.value);
+  };
+
+  const handleChangeLastName = (event: any) => {
+    if (lastName.length > -1) {
+      setErroLastName("");
+    }
+    setLastName(event.target.value);
+  };
+
+  const handleChangeEmail = (event: any) => {
+    if (email.length > -1) {
+      setErroEmail("");
+    }
+    setEmail(event.target.value);
+  };
+
+  const handleChangeRadioItem = (value: string) => {
+    if (value.length > 0) {
+      setErroCheckbox("");
+    }
+    setRadioQuery((prevValue) => (prevValue === value ? "" : value));
+  };
+
+  const handleChangeMessage = (event: any) => {
+    if (message.length > 0) {
+      setErroMessage("");
+    }
+    setMessage(event.target.value);
+  };
+
+  const cleanRadioItem = (value: string) => {
+    if (radioQuery === value) {
+      setRadioQuery("");
+    }
+  };
+  const handleChangeTerms = (value: boolean) => {
+    if (value === true) {
+      setErroTerms("");
+    }
+    setTerms((terms) => !terms);
+  };
+  const showData = (event: any) => {
+    event.preventDefault();
+    setErroName("");
+    setErroLastName("");
+    setErroEmail("");
+    setErroCheckbox("");
+    setErroMessage("");
+    setErroTerms("");
+
+    if (name === "") {
+      setErroName("O campo Nome precisa ser preenchido");
+    }
+    if (lastName === "") {
+      setErroLastName("O campo Last Name precisa ser preenchido");
+    }
+    if (email === "") {
+      setErroEmail("O campo e-mail precisa ser preenchido");
+    } else if (!email.includes("@")) {
+      setErroEmail("O e-mail está inválido");
+    }
+    if (radioQuery === "") {
+      setErroCheckbox("Selecione uma das opções");
+    }
+    if (message === "") {
+      setErroMessage("O campo Message precisa ser preenchido");
+    }
+    if (terms === false) {
+      return setErroTerms("Você precisa aceitar os termos");
+    }
+    console.log({
+      name,
+      lastName,
+      email,
+      message,
+      radioQuery,
+      terms,
+    });
+  };
+  const handleChangeReset = (event: any) => {
+    event.preventDefault();
+    setName("");
+    setLastName("");
+    setEmail("");
+    setMessage("");
+    setRadioQuery("");
+    setTerms(false);
+    setErroName("");
+    setErroLastName("");
+    setErroEmail("");
+    setErroCheckbox("");
+    setErroMessage("");
+    setErroTerms("");
+  };
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:size-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
+    <div className="h-full min-h-screen flex items-center justify-center bg-emerald-100 p-10">
+      <form
+        onSubmit={showData}
+        className="space-y-4  bg-white max-w-[600px] max-w- rounded-lg p-4"
+      >
+        <h1 className="text-xl font-semibold">Contact Us</h1>
+        <div className="flex flex-col md:flex-row gap-4 md:gap-3 w-full">
+          <div className="space-y-2 md:w-2/4">
+            <Label
+              htmlFor="First Name"
+              className="text-xs text-gray-500 outline-none ring-0"
+            >
+              First Name
+            </Label>
+            <Input
+              type="tex"
+              className="md:w-full"
+              value={name}
+              onChange={handleChangeName}
             />
-          </a>
+            {<p className="text-red-500 text-xs">{erroName}</p>}
+          </div>
+          <div className="space-y-2 md:w-2/4">
+            <Label htmlFor="Last Name" className="text-xs text-gray-500">
+              Last Name
+            </Label>
+            <Input
+              type="text"
+              className="md:w-full"
+              value={lastName}
+              onChange={handleChangeLastName}
+            />
+            {<p className="text-red-500 text-xs">{erroLastName}</p>}
+          </div>
         </div>
-      </div>
-
-      <div className="relative z-[-1] flex place-items-center before:absolute before:h-[300px] before:w-full before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 sm:before:w-[480px] sm:after:w-[240px] before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className="mb-32 grid text-center lg:mb-0 lg:w-full lg:max-w-5xl lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Docs{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Learn{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Templates{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Explore starter templates for Next.js.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Deploy{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-balance text-sm opacity-50">
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+        <div className="space-y-2">
+          <Label htmlFor="email" className="text-xs text-gray-500">
+            Email Address
+          </Label>
+          <Input type="text" value={email} onChange={handleChangeEmail} />
+          {<p className="text-red-500 text-xs pl-2">{erroEmail}</p>}
+        </div>
+        <div className="flex flex-col gap-3">
+          <Label htmlFor="email" className="text-xs text-gray-500">
+            Query Type
+          </Label>
+          <div className="flex flex-col gap-1">
+            <RadioGroup
+              className="flex flex-col md:flex-row gap-3 w-full"
+              value={radioQuery}
+              onValueChange={handleChangeRadioItem}
+            >
+              <div className="border rounded-lg py-2 px-5 flex items-center gap-4 hover:border-emerald-600 md:w-2/4">
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem
+                    value="General Enquiry"
+                    onClick={() => cleanRadioItem("General Enquiry")}
+                  />
+                  <Label>General Enquiry</Label>
+                </div>
+              </div>
+              <div className="border rounded-lg py-2 px-5 flex items-center gap-4 hover:border-emerald-600 md:w-2/4">
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem
+                    value="Support Request"
+                    onClick={() => cleanRadioItem("Support Request")}
+                  />
+                  <Label>Support Request</Label>
+                </div>
+              </div>
+            </RadioGroup>
+            {<p className="text-red-500 text-xs pl-2">{erroCheckbox}</p>}
+          </div>
+        </div>
+        <div className="space-y-3">
+          <Label htmlFor="email" className="text-xs text-gray-500">
+            Message
+          </Label>
+          <Textarea
+            className="resize-none h-[200px] md:h-[100px] text-xs"
+            value={message}
+            onChange={handleChangeMessage}
+          />
+          {<p className="text-red-500 text-xs">{erroMessage}</p>}
+        </div>
+        <div className="flex flex-col md:flex-row gap-1">
+          <div className="flex items-center gap-3 pl-1">
+            <Checkbox checked={terms} onCheckedChange={handleChangeTerms} />
+            <Label htmlFor="email" className="text-[11px] text-gray-500">
+              I consent to being contacted by the team
+            </Label>
+          </div>
+          {<p className="text-red-500 text-xs pl-2">{erroTerms}</p>}
+        </div>
+        <div className="flex gap-2">
+          <Button
+            onClick={handleChangeReset}
+            className="w-2/4 bg-emerald-600 hover:bg-emerald-900"
+          >
+            Resetar
+          </Button>
+          <Button className="w-2/4 bg-emerald-600 hover:bg-emerald-900">
+            Submit
+          </Button>
+        </div>
+      </form>
+    </div>
   );
 }
