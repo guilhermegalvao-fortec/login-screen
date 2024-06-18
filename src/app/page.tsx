@@ -216,7 +216,7 @@ export default function Home() {
     <div className="h-full min-h-screen flex items-center justify-center bg-emerald-100 p-10">
       <form
         onSubmit={showData}
-        className="space-y-4  bg-white max-w-[600px] max-w- rounded-lg p-4"
+        className="space-y-4  bg-white max-w-[600px]  rounded-lg p-4"
       >
         <h1 className="text-xl font-semibold">Contact Us</h1>
         <div className="flex flex-col md:flex-row gap-4 md:gap-3 w-full">
