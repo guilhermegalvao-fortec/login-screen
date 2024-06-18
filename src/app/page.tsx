@@ -213,7 +213,7 @@ export default function Home() {
     setErroTerms("");
   };
   return (
-    <div className="h-full min-h-screen flex items-center justify-center bg-emerald-100 p-10">
+    <div className="h-full flex items-center justify-center bg-emerald-100 p-10">
       <form
         onSubmit={showData}
         className="space-y-4  bg-white max-w-[600px]  rounded-lg p-4"
